@@ -14,7 +14,11 @@ def client(tmp_path):
         SQLALCHEMY_DATABASE_URI=f"sqlite:///{database}",
     )
     with app.app_context():
-        db.drop_all()
+        # app.py initializes the default database on import; discard that engine
+        # so this test fixture uses a temporary database instead.
+        db.session.remove()
+        db.engines[app].dispose()
+        db.engines.pop(app, None)
         db.create_all()
         admin = User(name="Test Admin", email="admin@test.local", role="admin")
         admin.set_password("StrongAdmin123")
@@ -26,6 +30,8 @@ def client(tmp_path):
     with app.app_context():
         db.session.remove()
         db.drop_all()
+        db.engines[app].dispose()
+        db.engines.pop(app, None)
 
 
 def test_public_pages_load(client):
