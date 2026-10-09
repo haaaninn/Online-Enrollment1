@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create your account</h2>
+<form method="post" class="form narrow" novalidate>
+  {{ form.hidden_tag() }}
+  <label>{{ form.name.label }} {{ form.name(size=40) }}</label>
+  {% for e in form.name.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.email.label }} {{ form.email(size=40) }}</label>
+  {% for e in form.email.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.password.label }} {{ form.password(size=40) }}</label>
+  {% for e in form.password.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.confirm.label }} {{ form.confirm(size=40) }}</label>
+  {% for e in form.confirm.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <button class="btn" type="submit">Register</button>
+  <p class="muted">Already registered? <a href="{{ url_for('login') }}">Sign in</a>.</p>
+</form>
+{% endblock %}

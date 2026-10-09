@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Enroll in {{ course.code }} — {{ course.title }}</h2>
+<p class="muted">Fee: ₱{{ "%.2f"|format(course.fee) }} &middot; {{ course.slots_left }} slot(s) left</p>
+
+<form method="post" class="form narrow" novalidate>
+  {{ form.hidden_tag() }}
+  <label>{{ form.student_name.label }} {{ form.student_name(size=40) }}</label>
+  {% for e in form.student_name.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.student_email.label }} {{ form.student_email(size=40) }}</label>
+  {% for e in form.student_email.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.contact_no.label }} {{ form.contact_no(size=40) }}</label>
+  {% for e in form.contact_no.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.schedule.label }} {{ form.schedule() }}</label>
+  <label>{{ form.payment_mode.label }} {{ form.payment_mode() }}</label>
+  <label>{{ form.notes.label }} {{ form.notes(rows=3, cols=40) }}</label>
+
+  <button class="btn" type="submit">Submit enrollment</button>
+</form>
+{% endblock %}

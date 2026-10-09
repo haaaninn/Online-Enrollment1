@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit enrollment {{ record.reference_no }}</h2>
+
+<form method="post" class="form narrow" novalidate>
+  {{ form.hidden_tag() }}
+  <label>{{ form.student_name.label }} {{ form.student_name(size=40) }}</label>
+  {% for e in form.student_name.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.student_email.label }} {{ form.student_email(size=40) }}</label>
+  {% for e in form.student_email.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.contact_no.label }} {{ form.contact_no(size=40) }}</label>
+  {% for e in form.contact_no.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.schedule.label }} {{ form.schedule() }}</label>
+  <label>{{ form.payment_mode.label }} {{ form.payment_mode() }}</label>
+  <label>{{ form.notes.label }} {{ form.notes(rows=3, cols=40) }}</label>
+
+  {% if current_user.is_admin %}
+    <label>Status
+      <select name="status">
+        {% for s in ["pending", "confirmed", "cancelled"] %}
+          <option value="{{ s }}" {% if record.status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  {% endif %}
+
+  <button class="btn" type="submit">Save changes</button>
+  <a class="btn btn-ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+</form>
+{% endblock %}

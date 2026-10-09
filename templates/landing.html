@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1>Enroll in skills training without the queue.</h1>
+    <p class="lead">BrightPath Training Center runs short courses in IT, business English, and
+      TESDA-aligned trades. Submit your enrollment online, get a reference number instantly,
+      and track your application status anytime.</p>
+    <p class="cta">
+      <a class="btn btn-lg" href="{{ url_for('register') }}">Enroll Now</a>
+      <a class="btn btn-ghost btn-lg" href="{{ url_for('login') }}">Login</a>
+    </p>
+    <p class="muted">No account yet? Registration takes under a minute.</p>
+  </div>
+  <img class="hero-img"
+       src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=70"
+       alt="Students working together at a training center table">
+</section>
+
+<section>
+  <h2>What we offer</h2>
+  <div class="cards">
+    <article class="card"><h3>Short courses</h3><p>Focused programs from 16 to 60 hours, scheduled on weekdays or Saturdays.</p></article>
+    <article class="card"><h3>Certified trainers</h3><p>Instructors with industry experience in IT, hospitality, and business communication.</p></article>
+    <article class="card"><h3>Flexible payment</h3><p>Pay in full or in two installments. Confirmation follows once payment is verified.</p></article>
+  </div>
+</section>
+
+<section>
+  <h2>Open courses</h2>
+  <div class="cards">
+    {% for c in courses %}
+      <article class="card">
+        <h3>{{ c.code }} — {{ c.title }}</h3>
+        <p>{{ c.description }}</p>
+        <p class="price">₱{{ "%.2f"|format(c.fee) }}</p>
+        <p class="muted">{{ c.slots_left }} slot(s) left</p>
+        <a class="btn" href="{{ url_for('enroll', course_id=c.id) }}">Enroll</a>
+      </article>
+    {% else %}
+      <p>No courses are open right now. Please check back soon.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

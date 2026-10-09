@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage courses</h2>
+
+<form method="post" class="form narrow" novalidate>
+  {{ form.hidden_tag() }}
+  <label>{{ form.code.label }} {{ form.code(size=20) }}</label>
+  {% for e in form.code.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.title.label }} {{ form.title(size=40) }}</label>
+  {% for e in form.title.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.description.label }} {{ form.description(rows=3, cols=40) }}</label>
+  <label>{{ form.fee.label }} {{ form.fee() }}</label>
+  {% for e in form.fee.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label>{{ form.slots.label }} {{ form.slots() }}</label>
+  {% for e in form.slots.errors %}<p class="err">{{ e }}</p>{% endfor %}
+
+  <label class="check">{{ form.is_open() }} {{ form.is_open.label }}</label>
+  <button class="btn" type="submit">Add course</button>
+</form>
+
+<table class="table">
+  <thead><tr><th>Code</th><th>Title</th><th>Fee</th><th>Enrolled</th><th></th></tr></thead>
+  <tbody>
+  {% for c in courses %}
+    <tr>
+      <td>{{ c.code }}</td>
+      <td>{{ c.title }}</td>
+      <td>₱{{ "%.2f"|format(c.fee) }}</td>
+      <td>{{ c.slots_taken }} / {{ c.slots }}</td>
+      <td>
+        <form method="post" action="{{ url_for('delete_course', course_id=c.id) }}"
+              onsubmit="return confirm('Delete course {{ c.code }}?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

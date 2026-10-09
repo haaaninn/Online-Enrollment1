@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All courses</h2>
+<table class="table">
+  <thead><tr><th>Code</th><th>Title</th><th>Fee</th><th>Slots left</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for c in courses %}
+    <tr>
+      <td>{{ c.code }}</td>
+      <td>{{ c.title }}</td>
+      <td>₱{{ "%.2f"|format(c.fee) }}</td>
+      <td>{{ c.slots_left }} / {{ c.slots }}</td>
+      <td>{% if c.is_open %}Open{% else %}Closed{% endif %}</td>
+      <td>
+        {% if c.is_open and c.slots_left > 0 %}
+          <a class="btn btn-sm" href="{{ url_for('enroll', course_id=c.id) }}">Enroll</a>
+        {% else %}
+          <span class="muted">Unavailable</span>
+        {% endif %}
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6">No courses yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
